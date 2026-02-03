@@ -104,6 +104,7 @@ func main() {
 			fmt.Println(stages[MaxWrong])
 			MaxWrong++
 		} else {
+			fmt.Println("Есть такая буква!")
 			fmt.Println(string(shown))
 		}
 		if string(shown) == string(secret) {
