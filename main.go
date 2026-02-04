@@ -105,43 +105,50 @@ func main() {
 		shown[i] = '_'
 	}
 	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Println("Игра начилась")
-	fmt.Println(string(shown))
-	for {
-		fmt.Println("У вас осталось", MaxWrong-wrong, "возможности ошибиться.")
-		scanner.Scan()
-		s := scanner.Text()
-		s = strings.TrimSpace(s)
-		s = strings.ToLower(s)
-		rs := []rune(s)
-		ch := rs[0]
-		if len(rs) != 1 || !unicode.IsLetter(ch) {
-			fmt.Println("Пишите нормально.")
-			continue
-		}
-		found := false
-		for i := range randomWordInRunes {
-			if randomWordInRunes[i] == ch {
-				shown[i] = ch
-				found = true
+	fmt.Println("Хотите начать игру или выйти?(для старта введите s для выхода q")
+	scanner.Scan()
+	t := scanner.Text()
+	t = strings.ToLower(t)
+	if t == "s" {
+		fmt.Println("Игра начилась.")
+		fmt.Println(string(shown))
+		for {
+			fmt.Println("У вас осталось", MaxWrong-wrong, "возможности ошибиться.")
+			scanner.Scan()
+			s := scanner.Text()
+			s = strings.ToLower(s)
+			rs := []rune(s)
+			ch := rs[0]
+			if len(rs) != 1 || !unicode.IsLetter(ch) {
+				fmt.Println("Пишите нормально.")
+				continue
+			}
+			found := false
+			for i := range randomWordInRunes {
+				if randomWordInRunes[i] == ch {
+					shown[i] = ch
+					found = true
+				}
+			}
+			if !found {
+				fmt.Println(stages[wrong])
+				wrong++
+			} else {
+				fmt.Println("Есть такая буква!!")
+				fmt.Println(string(shown))
+			}
+			if string(shown) == string(secretWord) {
+				fmt.Println("Поздравляю вы выиграли!Слово было:")
+				fmt.Println(string(secretWord))
+				break
+			} else if wrong == 7 {
+				fmt.Println("Ты проиграл.Слово было:")
+				fmt.Println(string(secretWord))
+				break
 			}
 		}
-		if !found {
-			fmt.Println(stages[wrong])
-			wrong++
-		} else {
-			fmt.Println("Есть такая буква!!")
-			fmt.Println(string(shown))
-		}
-		if string(shown) == string(secretWord) {
-			fmt.Println("Поздравляю вы выиграли!Слово было:")
-			fmt.Println(string(secretWord))
-			break
-		} else if wrong == 7 {
-			fmt.Println("Ты проиграл.Слово было:")
-			fmt.Println(string(secretWord))
-			break
-		}
-
+	} else if t == "q" {
+		fmt.Println("Пока.")
 	}
+
 }
